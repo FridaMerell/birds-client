@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server"
 
 export const GET = async (
 	request: NextRequest,
-	{ params }: { params: { id: string } }
+	{ params }: { params: Promise<{ id: string }> }
 ) => {
 	let id = (await params).id
 	return new Response("Location ID route")
@@ -12,7 +12,7 @@ export const GET = async (
 
 export const PATCH = async (
 	request: NextRequest,
-	{ params }: { params: { id: string } }
+	{ params }: { params: Promise<{ id: string }> }
 ) => {
 	let id = (await params).id
 	let requestBody = (await request.json()) as Location
@@ -30,7 +30,7 @@ export const PATCH = async (
 
 export const DELETE = async (
 	request: NextRequest,
-	{ params }: { params: { id: string } }
+	{ params }: { params: Promise<{ id: string }> }
 ) => {
 	let id = (await params).id
 	let response = await authorizedFetch.delete(`/locations/${id}`)

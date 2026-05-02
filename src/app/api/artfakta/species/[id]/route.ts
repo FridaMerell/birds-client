@@ -3,9 +3,9 @@ import { NextRequest } from "next/server"
 
 export const GET = async (
 	request: NextRequest,
-	{ params }: { params: { id: string } }
+	{ params }: { params: Promise<{ id: string }> }
 ) => {
-	const { id } = params
+	const { id } = await params
 
   let speciesData  = await getSpecies(id)
 

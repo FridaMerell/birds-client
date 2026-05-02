@@ -3,7 +3,7 @@ import { NextRequest } from "next/server"
 
 export const GET = async (
 	request: NextRequest,
-	{ params }: { params: { id: string } }
+	{ params }: { params: Promise<{ id: string }> }
 ) => {
 	// species/[id] in URL
 	let id = (await params).id

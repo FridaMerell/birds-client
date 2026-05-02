@@ -13,7 +13,6 @@ export const GET = async (request: NextRequest) => {
 			Accept: "text/event-stream",
 			"Cache-Control": "no-cache",
 		},
-		// @ts-expect-error Next.js extended fetch options
 		cache: "no-store",
 	})
 

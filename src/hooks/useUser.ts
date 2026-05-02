@@ -12,14 +12,14 @@ const useUser = () => {
 	const dispatch = useDispatch()
 
 	useEffect(() => {
-			if (getToken()) {
-				getUser().then((data) => {
-					dispatch(setUser(data))
-				})
+		;(async () => {
+			const token = await getToken()
+			if (token) {
+				const data = await getUser()
+				dispatch(setUser(data))
 			}
-		},
-		[]
-	)
+		})()
+	}, [])
 
 }
 
