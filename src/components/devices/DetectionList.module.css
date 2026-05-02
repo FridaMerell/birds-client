@@ -1,0 +1,12 @@
+.flash {
+	animation: flash 1.5s ease-out forwards;
+}
+
+@keyframes flash {
+	0% {
+		background-color: rgba(32, 201, 151, 0.22);
+	}
+	100% {
+		background-color: transparent;
+	}
+}

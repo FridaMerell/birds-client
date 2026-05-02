@@ -1,0 +1,22 @@
+.root {
+	position: relative;
+	padding: var(--mantine-spacing-md);
+	transition: border-color 150ms ease;
+	border-width: 2px;
+	opacity: 0.9;
+	&[data-checked] {
+		border-color: var(--mantine-primary-color-filled);
+		opacity: 1;
+    color: white;
+	}
+
+	@mixin hover {
+		@mixin light {
+			background-color: var(--mantine-color-gray-0);
+		}
+
+		@mixin dark {
+			background-color: var(--mantine-color-dark-6);
+		}
+	}
+}

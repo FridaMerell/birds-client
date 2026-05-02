@@ -1,0 +1,43 @@
+@mixin fullWidth {
+  width: 100%;
+  max-width: 100%;
+}
+
+@mixin contentWidth {
+  width: 100%;
+  max-width: clamp(320px, 90%, 1200px);
+  margin: 0 auto;
+}
+
+@mixin container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+@mixin flex {
+  display: flex;
+}
+
+@mixin flexColumn {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin flexRow {
+  display: flex;
+  flex-direction: row;
+}
+
+@mixin center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin flexCenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+

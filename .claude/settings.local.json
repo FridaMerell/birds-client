@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:api.artdatabanken.se)",
+      "WebSearch",
+      "WebFetch(domain:api-portal.artdatabanken.se)"
+    ]
+  }
+}

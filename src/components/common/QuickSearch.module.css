@@ -1,0 +1,15 @@
+.resultRow {
+	border: 1px solid var(--mantine-color-dark-4);
+	border-radius: 8px;
+	transition: background-color 0.2s ease;
+	cursor: default;
+
+	&:hover {
+		background-color: color-mix(in srgb, var(--mantine-primary-color-5) 12%, transparent);
+	}
+}
+
+.resultList {
+	max-height: 420px;
+	overflow-y: auto;
+}
