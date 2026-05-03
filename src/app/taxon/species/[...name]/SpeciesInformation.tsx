@@ -10,8 +10,8 @@ const SpeciesInformation = ({ speciesData, sounds, geogridData }: { speciesData:
   const [soundsToShow, setSoundsToShow] = useState(5)
   const [soundsOpen, setSoundsOpen] = useState(false)
   return <SimpleGrid cols={{
-    base: 2,
-    sm: 2,
+    base: 1,
+    sm: 1,
     md: 3
   }} spacing={50}>
     <Stack gap="md">

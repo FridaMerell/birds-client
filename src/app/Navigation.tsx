@@ -17,7 +17,7 @@ import { GiRaspberry } from "react-icons/gi"
 import QuickSearch from "@/components/common/QuickSearch"
 
 const Navigation = () => {
-  const [open, { toggle }] = useDisclosure(false)
+  const [open, { toggle, close: closeNav }] = useDisclosure(false)
   const [searchOpen, { open: openSearch, close: closeSearch }] = useDisclosure(false)
   const user = useCurrentUser()
   const theme = useMantineTheme()
@@ -181,7 +181,7 @@ const Navigation = () => {
       childrenOffset={0}
       leftSection={<IconSearch />}
       label={open && <Text>Hitta art</Text>}
-      onClick={openSearch}
+      onClick={() => { openSearch(); closeNav() }}
     />
     <Group bg={'dark.4'} align={'center'} justify={'center'} bdrs={8} c={'green.4'} p={8} wrap="nowrap" w={'100%'}>
       {

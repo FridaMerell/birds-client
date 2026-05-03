@@ -4,7 +4,9 @@
       "WebFetch(domain:github.com)",
       "WebFetch(domain:api.artdatabanken.se)",
       "WebSearch",
-      "WebFetch(domain:api-portal.artdatabanken.se)"
+      "WebFetch(domain:api-portal.artdatabanken.se)",
+      "Bash(Get-ChildItem -Path \"c:\\\\projects\\\\nya artportalen\\\\client\\\\src\" -Recurse -Filter *.jsx -o Name)",
+      "Bash(Select-Object -First 30)"
     ]
   }
 }
