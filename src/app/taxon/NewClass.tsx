@@ -1,14 +1,17 @@
 
 'use client'
+import useCurrentUser from "@/hooks/useCurrentUser"
 import { TaxClass } from "@/interfaces/taxon/taxclass"
+import { UserContext } from "@/providers/UserProvider"
 import { ActionIcon, Box, Button, Modal, NumberInput, Portal, TextInput } from "@mantine/core"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { RiAddLargeFill } from "react-icons/ri"
 import { useSelector } from "react-redux"
 
 const NewClass = () => {
   const [open, setOpen] = useState(false)
-  const user =  useSelector((state:any) => state.user.user)
+  const { state} = useCurrentUser()
+  console.log(state.user)
   const [taxClass, setClass] = useState<TaxClass>({
     taxonomyId: 0,
     scientificName: '',
@@ -27,7 +30,7 @@ const NewClass = () => {
     setOpen(false)
   }
 
-  if (!user || !user.id) {
+  if (!state.user || !state.user.id) {
     return <></>
   }
   return <>

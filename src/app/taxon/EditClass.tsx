@@ -1,19 +1,20 @@
 'use client'
 
 import ClassIcon from "@/components/common/ClassIcon"
+import useCurrentUser from "@/hooks/useCurrentUser"
 import useUser from "@/hooks/useUser"
 import { TaxClass } from "@/interfaces/taxon/taxclass"
 import { ActionIcon, CardSection, Flex, Group, Popover } from "@mantine/core"
 import { notifications } from "@mantine/notifications"
 import { IconDotsVertical, IconInfoCircle } from "@tabler/icons-react"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 
 
 const IconPicker = ({ taxon }: { taxon: TaxClass }) => {
   const [icon, setIcon] = useState<string>(taxon.icon || '')
   const [open, setOpen] = useState<boolean>(false)
-  
+
   useEffect(() => {
     if (icon && icon !== taxon.icon)
       updateIcon(icon)
@@ -70,7 +71,7 @@ const IconPicker = ({ taxon }: { taxon: TaxClass }) => {
 }
 
 const EditClass = ({ taxon }: { taxon: TaxClass }) => {
-  const { user } = useSelector((state: any) => state.user)
+  const { state: { user } } = useCurrentUser()
 
   return <>
     {(user && user.id) ?

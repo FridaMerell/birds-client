@@ -2,7 +2,7 @@
 import { Accordion, AccordionItem, Avatar, Badge, Box, Button, Chip, Collapse, Divider, Flex, Group, Modal, ScrollArea, SimpleGrid, Spoiler, Stack, Text, Title } from "@mantine/core"
 import { IconTextCaption } from "@tabler/icons-react"
 import { useState } from "react"
-import { PiAcorn, PiBird, PiKnife, PiMapPin, PiMapPinArea, PiSpeakerHifi, PiTextAUnderline, PiUserSound, PiWarning } from "react-icons/pi"
+import { PiAcorn, PiBird, PiKnife,  PiMapPinArea, PiWarning } from "react-icons/pi"
 import GeogridData from "./map/GeogridData"
 
 const SpeciesInformation = ({ speciesData, sounds, geogridData }: { speciesData: any, sounds: any[], geogridData: any }) => {

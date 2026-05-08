@@ -126,6 +126,12 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     refreshUser()
   }, [refreshUser])
 
+  useEffect(() => {
+    if (!state.user) return
+    const id = setInterval(() => { refreshToken() }, 2 * 60 * 1000)
+    return () => clearInterval(id)
+  }, [state.user, refreshToken])
+
   const value = useMemo<ContextValue>(() => ({ state, setUser, clearUser, updateUser, refreshUser, refreshToken, signOut }), [state, setUser, clearUser, updateUser, refreshUser, refreshToken, signOut])
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>
