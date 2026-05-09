@@ -1,13 +1,14 @@
 'use client'
 import { useCallback, useEffect, useRef, useState } from "react"
-import { Box, Divider, Group, MantineProvider, Stack, Text, Title } from "@mantine/core"
-import theme from "@/theme/theme"
+import { Box, Divider, Group, Stack, Tabs, Text, Title } from "@mantine/core"
 import { Device } from "@/interfaces/device"
 import { Detection } from "@/interfaces/detection"
-import { fetchDetections, fetchDevices } from "@/lib/api/devices"
+import { SpeciesSummary } from "@/interfaces/speciesSummary"
+import { fetchDetections, fetchDevices, fetchSpeciesSummary } from "@/lib/api/devices"
 import { useDetectionStream } from "@/hooks/useDetectionStream"
 import DevicePicker from "@/components/devices/DevicePicker"
 import DetectionList from "@/components/devices/DetectionList"
+import SpeciesSummaryTable from "@/components/devices/SpeciesSummaryTable"
 
 interface StreamConfig {
 	deviceId: number
@@ -18,6 +19,7 @@ const Stream = () => {
 	const [devices, setDevices] = useState<Device[]>([])
 	const [selectedDeviceId, setSelectedDeviceId] = useState<number | null>(null)
 	const [initialDetections, setInitialDetections] = useState<Detection[]>([])
+	const [speciesSummary, setSpeciesSummary] = useState<SpeciesSummary[]>([])
 	const [streamConfig, setStreamConfig] = useState<StreamConfig | null>(null)
 	const [flashIds, setFlashIds] = useState<Set<number>>(new Set())
 	const prevLiveRef = useRef<Detection[]>([])
@@ -25,16 +27,20 @@ const Stream = () => {
 	const handleDeviceSelect = useCallback(async (deviceId: number) => {
 		setSelectedDeviceId(deviceId)
 		setInitialDetections([])
+		setSpeciesSummary([])
 		setStreamConfig(null)
 		prevLiveRef.current = []
 
-		const data = await fetchDetections(deviceId)
-		setInitialDetections(data)
-		const maxId = data.length > 0 ? Math.max(...data.map(d => d.id)) : null
+		const [detectionsData, summaryData] = await Promise.all([
+			fetchDetections(deviceId),
+			fetchSpeciesSummary(deviceId).catch(() => [] as SpeciesSummary[]),
+		])
+		setInitialDetections(detectionsData)
+		setSpeciesSummary(summaryData)
+		const maxId = detectionsData.length > 0 ? Math.max(...detectionsData.map(d => d.id)) : null
 		setStreamConfig({ deviceId, lastId: maxId })
 	}, [])
 
-	// Load devices on mount; auto-select the first active one
 	useEffect(() => {
 		fetchDevices().then(data => {
 			setDevices(data)
@@ -48,7 +54,6 @@ const Stream = () => {
 		streamConfig?.lastId ?? null
 	)
 
-	// Detect newly arrived SSE rows and schedule flash removal
 	useEffect(() => {
 		const prevIds = new Set(prevLiveRef.current.map(d => d.id))
 		const newOnes = liveDetections.filter(d => !prevIds.has(d.id))
@@ -68,20 +73,17 @@ const Stream = () => {
 		prevLiveRef.current = liveDetections
 	}, [liveDetections])
 
-	// Merge live (top) + initial history, deduplicated by id
 	const liveIds = new Set(liveDetections.map(d => d.id))
 	const allDetections = [
 		...liveDetections,
 		...initialDetections.filter(d => !liveIds.has(d.id)),
 	].slice(0, 200)
 
-	console.log("Rendering Stream with config:", streamConfig, "Live detections:", liveDetections, "Initial detections:", initialDetections)
-
 	return (
 		<Box p={20}>
 			<Stack gap="lg">
 				<Group justify="space-between" align="center">
-					<Title order={1}  >
+					<Title order={1}>
 						BirdNet Stream
 					</Title>
 					<Group gap={6} align="center">
@@ -111,7 +113,24 @@ const Stream = () => {
 					onChange={handleDeviceSelect}
 				/>
 
-				<DetectionList detections={allDetections} flashIds={flashIds} />
+				<Tabs defaultValue="summary">
+					<Tabs.List>
+						<Tabs.Tab value="stream">Stream</Tabs.Tab>
+						<Tabs.Tab value="summary">Senaste dygnet</Tabs.Tab>
+					</Tabs.List>
+
+					<Tabs.Panel value="stream" pt="md">
+						<DetectionList detections={allDetections} flashIds={flashIds} />
+					</Tabs.Panel>
+
+					<Tabs.Panel value="summary" pt="md">
+						<SpeciesSummaryTable
+							key={selectedDeviceId ?? 0}
+							initialSummary={speciesSummary}
+							liveDetections={liveDetections}
+						/>
+					</Tabs.Panel>
+				</Tabs>
 			</Stack>
 		</Box>
 	)

@@ -33,7 +33,6 @@ const DetectionList = ({ detections, flashIds }: DetectionListProps) => {
 			</Box>
 		)
 	}
-console.log("Rendering DetectionList with detections:", detections)
 	return (
 		<Box style={{ overflowX: "auto" }}>
 			<Table striped highlightOnHover withTableBorder withColumnBorders>
